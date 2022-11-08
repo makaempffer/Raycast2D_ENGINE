@@ -5,6 +5,7 @@ from player import *
 from world_object_manager import * 
 from ray import *
 from ray_manager import *
+from object_renderer import *
 
 class Game:
     def __init__(self):
@@ -19,7 +20,8 @@ class Game:
             self.player = Player(self)
             self.world_object_manager = WorldObjectManager(self)
             self.world_object_manager.add_random_object_number(5)
-            self.ray_manager = RayManager(self, self.player)
+            self.object_renderer = ObjectRenderer(self)
+            self.ray_manager = RayManager(self, self.player, self.world_object_manager, self.object_renderer)
 
     def update(self):
         #updates modules
@@ -31,12 +33,16 @@ class Game:
         pg.display.set_caption(f'{self.clock.get_fps() :.1f}')
 
     def draw(self):
-        #2D render
         self.screen.fill('black')
+        self.draw_2d()
+        #self.draw_3d()
+
+    def draw_2d(self):
         self.player.draw()
         self.world_object_manager.draw()
-
-
+    
+    def draw_3d(self):
+        self.object_renderer.render()
 
     def check_events(self):
         self.global_trigger = False

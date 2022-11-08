@@ -8,6 +8,6 @@ class WorldObject():
         self.b_x, self.b_y = b 
     
     def draw(self):
-        pg.draw.line(self.game.screen, 'white',
+        pg.draw.line(self.game.screen, 'gray',
                     (self.a_x, self.a_y), 
                     (self.b_x, self.b_y), 1)

@@ -1,15 +1,17 @@
 from settings import * 
 import pygame as pg
 import math
+from functions import *
 
 
 class Player():
     def __init__(self, game):
         self.game = game 
-        self.x, self.y = PLAYER_POS
+        self.pos = pg.math.Vector2(PLAYER_POS)
         self.angle = PLAYER_ANGLE
-        self.shot = False
-        self.health = PLAYER_MAX_HEALTH
+        self.dir = pg.math.Vector2(1, 1)
+        self.average_point = None
+        self.is_colliding = False
 
     def movement(self):
         sin_a = math.sin(self.angle)
@@ -32,22 +34,45 @@ class Player():
         if keys[pg.K_d]:
             dx += -speed_sin
             dy += speed_cos
-        
-        self.x += dx
-        self.y += dy
+        """ Make a point of intersection in the radius of the direction of the player
+            and in the average of converging points of the colliding spots, get the distance
+            and if DISTANCE < PLAYER_SIZE: stop movement"""
+        distance = None
+        if self.average_point:
+            cir_x = self.pos.x + PLAYER_SIZE * math.cos(self.angle)
+            cir_y = self.pos.y + PLAYER_SIZE * math.sin(self.angle)
+            distance = math.sqrt((self.average_point.x - cir_x)**2 + (self.average_point.y - cir_y)**2)
+            """UNNCOMMENT TO DEBUG COLLISION"""
+            #pg.draw.circle(self.game.screen, 'blue', (self.pos.x + PLAYER_SIZE * math.cos(self.angle), 
+                                                    #self.pos.y + PLAYER_SIZE * math.sin(self.angle)), 5)
+            #pg.draw.circle(self.game.screen, 'yellow', self.average_point, 5)
+            #pg.draw.line(self.game.screen, 'yellow', self.pos, self.average_point)
+            #pg.draw.line(self.game.screen, 'pink', self.average_point, (cir_x, cir_y))
+        if distance and distance > PLAYER_SIZE:
+            if keys[pg.K_s]:
+                dx, dy = 0, 0
+            if keys[pg.K_d]:
+                dx, dy = 0, 0
+            if keys[pg.K_a]:
+                dx, dy = 0, 0
+            dx, dy = dx, dy
+        if distance and distance < PLAYER_SIZE and not keys[pg.K_s]:
+            dx, dy = 0, 0
+        self.dir.x, self.dir.y = dx, dy
         self.angle %= math.tau
 
+        
 
     def draw(self):
-        pg.draw.line(self.game.screen, 'yellow', (self.x , self.y), 
-                (self.x + WIDTH * math.cos(self.angle), 
-                self.y + WIDTH * math.sin(self.angle)), 2)
+        pg.draw.line(self.game.screen, 'yellow', (self.pos.x , self.pos.y), 
+                (self.pos.x + WIDTH * math.cos(self.angle), 
+                self.pos.y + WIDTH * math.sin(self.angle)), 1)
 
-        pg.draw.circle(self.game.screen, 'green', (self.x, self.y), 15)
+        pg.draw.circle(self.game.screen, 'green', (self.pos.x, self.pos.y), PLAYER_SIZE, 1)
 
     def mouse_control(self):
         mx, my = pg.mouse.get_pos()
-        if mx< MOUSE_BORDER_LEFT or mx > MOUSE_BORDER_RIGHT:
+        if mx < MOUSE_BORDER_LEFT or mx > MOUSE_BORDER_RIGHT:
             pg.mouse.set_pos([HALF_WIDTH, HALF_HEIGHT])
 
         self.rel = pg.mouse.get_rel()[0]
@@ -56,12 +81,15 @@ class Player():
 
     def update(self):
         self.movement()
+        self.move(self.dir.x, self.dir.y)
         self.mouse_control()
 
-    @property
-    def pos(self):
-        return self.x, self.y
+    
+    def move(self, dx, dy):
+        self.pos.x += dx
+        self.pos.y += dy
 
-    @property
-    def map_pos(self):
-        return int(self.x), int(self.y)
+        
+
+
+
