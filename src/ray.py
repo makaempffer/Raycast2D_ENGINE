@@ -12,6 +12,7 @@ class Ray:
         self.column = column
         self.ray_lenght = ray_lenght
 
+
     def update(self):
         self.update_pos()
         self.update_ray_direction()

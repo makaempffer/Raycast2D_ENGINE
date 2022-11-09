@@ -40,7 +40,7 @@ class Player():
         if self.average_point:
             cir_x = self.pos.x + PLAYER_SIZE * math.cos(self.angle)
             cir_y = self.pos.y + PLAYER_SIZE * math.sin(self.angle)
-            distance = math.sqrt((self.average_point.x - cir_x)**2 + (self.average_point.y - cir_y)**2)
+            #distance = math.sqrt((self.average_point.x - cir_x)**2 + (self.average_point.y - cir_y)**2)
             a = get_distance(self.pos.x, self.pos.y, self.average_point.x, self.average_point.y)
             b = get_distance(self.pos.x, self.pos.y, cir_x, cir_y)
             c = get_distance(cir_x, cir_y, self.average_point.x, self.average_point.y)

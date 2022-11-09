@@ -20,7 +20,7 @@ class Game:
     def new_game(self):
         self.player = Player(self)
         self.world_object_manager = WorldObjectManager(self)
-        self.world_object_manager.add_random_rects(10)
+        self.world_object_manager.add_random_rects(15)
         self.object_renderer = ObjectRenderer(self)
         self.ray_manager = RayManager(self, self.player, self.world_object_manager.objects_rects_borders, self.object_renderer)
 
@@ -34,7 +34,7 @@ class Game:
         pg.display.set_caption(f'{self.clock.get_fps() :.1f}')
 
     def draw(self):
-        self.screen.fill((60, 60, 60))
+        self.screen.fill((200, 200, 200))
         #self.draw_2d()
         self.draw_3d()
 

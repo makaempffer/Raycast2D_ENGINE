@@ -57,7 +57,7 @@ class RayManager:
 
             if closest_object:
                 #uncomment to see collision rays
-                pg.draw.line(self.game.screen, 'red', ray.pos, closest_object)
+                #pg.draw.line(self.game.screen, 'red', ray.pos, closest_object)
                 if record < PLAYER_SIZE:
                     ray_pos = pg.math.Vector2(closest_object)
                     colliding_rays.append(ray_pos)
@@ -91,15 +91,15 @@ class RayManager:
         """Updates renderer to draw <list> by casting rays 
         returning positions and columns number"""
         columns = []
-        objects = []
+        visible_objects = []
         for ray in self.rays:
             ray.update()
             closest_object = None
             record = 100000
-            
             for object in self.objects:
+                obj_vect = pg.Vector2(object[0], object[1])
                 #if an object is > 800 away it wont process 
-                if pg.math.Vector2.distance_to(self.origin.pos, pg.Vector2(object[0], object[1])) > 800:
+                if pg.math.Vector2.distance_to(self.origin.pos, obj_vect) > 1015:
                     continue
                 point = ray.cast(object[0], object[1])
                 if point:
@@ -109,11 +109,19 @@ class RayManager:
                     if distance_from_object < record:
                         record = distance_from_object
                         closest_object = point
+                        #new code
+                        visible_objects.append(closest_object)
+                        columns.append(ray.column)
+
+                        
             #only setting the objects if render distance is met
-            if closest_object and record < RENDER_DISTANCE - 1:
+            #if closest_object and record < RENDER_DISTANCE - 1:
+                #visible_objects.append(point)
+                #columns.append(ray.column)
                 #pg.draw.line(self.game.screen, 'blue', ray.pos, (closest_object))
-                objects.append(closest_object)
-                columns.append(ray.column)
-        
-        self.renderer.objects = objects
+                #objects.append(closest_object)
+                #columns.append(ray.column)
+            #debbugging amount of visible objects vs objects
+            #print("visible objects=",len(visible_objects), "objects=", len(objects))
+        self.renderer.objects = visible_objects
         self.renderer.columns = columns
