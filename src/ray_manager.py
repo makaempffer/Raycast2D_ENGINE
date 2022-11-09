@@ -19,8 +19,8 @@ class RayManager:
             self.rays.append(Ray(self.game, angle, self.origin, i))
             angle += DELTA_ANGLE
         # COLLISION RAYS EVERY RADIANS / 9 ARRAY MAKING
-        angles = [0, math.pi / 6, math.pi/4, math.pi / 3, math.pi/2, 3 * (math.pi) / 4, 5 * math.pi / 6, math.pi, 5 * (math.pi) / 4,
-                    3 * (math.pi) / 2, 7 * (math.pi) / 4]
+        #angles = [0, math.pi / 6, math.pi/4, math.pi / 3, math.pi/2, 3 * (math.pi) / 4, 5 * math.pi / 6, math.pi, 5 * (math.pi) / 4,
+                    #3 * (math.pi) / 2, 7 * (math.pi) / 4]
         #for angle in angles:
             #self.collision_rays.append(Ray(self.game, angle, self.origin, i))
         

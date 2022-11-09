@@ -48,7 +48,7 @@ class Player():
             #pg.draw.circle(self.game.screen, 'yellow', self.average_point, 5)
             #pg.draw.line(self.game.screen, 'yellow', self.pos, self.average_point)
             #pg.draw.line(self.game.screen, 'pink', self.average_point, (cir_x, cir_y))
-        if distance and distance > PLAYER_SIZE:
+        if distance and distance > PLAYER_SIZE * 2:
             if keys[pg.K_s]:
                 dx, dy = 0, 0
             if keys[pg.K_d]:
