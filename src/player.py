@@ -12,10 +12,12 @@ class Player():
         self.dir = pg.math.Vector2(1, 1)
         self.average_point = None
         self.is_colliding = False
+        self.speed_x = 0
+        self.speed_y = 0
 
     def movement(self):
-        sin_a = math.sin(self.angle)
         cos_a = math.cos(self.angle)
+        sin_a = math.sin(self.angle)
         dx, dy = 0, 0
         speed = PLAYER_SPEED * self.game.delta_time
         speed_sin = speed * sin_a
@@ -48,16 +50,9 @@ class Player():
             #pg.draw.circle(self.game.screen, 'yellow', self.average_point, 5)
             #pg.draw.line(self.game.screen, 'yellow', self.pos, self.average_point)
             #pg.draw.line(self.game.screen, 'pink', self.average_point, (cir_x, cir_y))
-        if distance and distance > PLAYER_SIZE * 2:
-            if keys[pg.K_s]:
-                dx, dy = 0, 0
-            if keys[pg.K_d]:
-                dx, dy = 0, 0
-            if keys[pg.K_a]:
-                dx, dy = 0, 0
-            dx, dy = dx, dy
-        if distance and distance < PLAYER_SIZE and not keys[pg.K_s]:
-            dx, dy = 0, 0
+        if self.speed_x or self.speed_y:
+            dx, dy = -self.speed_x, -self.speed_y
+
         self.dir.x, self.dir.y = dx, dy
         self.angle %= math.tau
 
