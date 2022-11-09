@@ -12,8 +12,6 @@ class Player():
         self.dir = pg.math.Vector2(1, 1)
         self.average_point = None
         self.is_colliding = False
-        self.speed_x = 0
-        self.speed_y = 0
 
     def movement(self):
         cos_a = math.cos(self.angle)
@@ -36,11 +34,9 @@ class Player():
         if keys[pg.K_d]:
             dx += -speed_sin
             dy += speed_cos
-        """ Make a point of intersection in the radius of the direction of the player
-            and in the average of converging points of the colliding spots, get the distance
-            and if DISTANCE < PLAYER_SIZE: stop movement"""
-        angle_is = None
+        """Make a triangle to get his angle if angle > 90 lets the ´player move away"""
         distance = None
+        angle = None
         if self.average_point:
             cir_x = self.pos.x + PLAYER_SIZE * math.cos(self.angle)
             cir_y = self.pos.y + PLAYER_SIZE * math.sin(self.angle)
@@ -48,20 +44,20 @@ class Player():
             a = get_distance(self.pos.x, self.pos.y, self.average_point.x, self.average_point.y)
             b = get_distance(self.pos.x, self.pos.y, cir_x, cir_y)
             c = get_distance(cir_x, cir_y, self.average_point.x, self.average_point.y)
-            angle_is = angle_triangle(a, b, c)
+            angle = angle_triangle(a, b, c)
             #triangle = self.average_point, self.pos, (cir_x, cir_y)
-            pg.draw.line(self.game.screen, 'white', self.pos, self.average_point)
-            pg.draw.line(self.game.screen, 'white', self.pos, (cir_x, cir_y))
-            pg.draw.line(self.game.screen, 'white', self.average_point, (cir_x, cir_y))
-            #distance2 = math.sqrt((self.average_point.x - self.pos.x)**2 + (self.average_point.y - self.pos.y)**2)
             """UNNCOMMENT TO DEBUG COLLISION"""
+            #pg.draw.line(self.game.screen, 'white', self.pos, self.average_point)
+            #pg.draw.line(self.game.screen, 'white', self.pos, (cir_x, cir_y))
+            #pg.draw.line(self.game.screen, 'white', self.average_point, (cir_x, cir_y))
+            #distance2 = math.sqrt((self.average_point.x - self.pos.x)**2 + (self.average_point.y - self.pos.y)**2)
+            
             #pg.draw.circle(self.game.screen, 'blue', (self.pos.x + PLAYER_SIZE * math.cos(self.angle), 
                                                     #self.pos.y + PLAYER_SIZE * math.sin(self.angle)), 5)
             #pg.draw.circle(self.game.screen, 'yellow', self.average_point, 5)
             #pg.draw.line(self.game.screen, 'yellow', self.pos, self.average_point)
             #pg.draw.line(self.game.screen, 'pink', self.average_point, (cir_x, cir_y))
-        if angle_is and angle_is > 90:
-            print("can move")
+        if angle and angle > 90:
             if keys[pg.K_s]:
                 dx, dy = 0, 0
             if keys[pg.K_d]:
@@ -69,7 +65,7 @@ class Player():
             if keys[pg.K_a]:
                 dx, dy = 0, 0
             dx, dy = dx, dy
-        if angle_is and angle_is < 90 and not keys[pg.K_s]:
+        if angle and angle < 90 and not keys[pg.K_s]:
             dx, dy = 0, 0
         self.dir.x, self.dir.y = dx, dy
         self.angle %= math.tau

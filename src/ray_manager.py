@@ -48,39 +48,38 @@ class RayManager:
                     
                     point_x, point_y = point  
                     distance_from_object =  math.sqrt((point_x - ray.pos.x)**2 + (point_y - ray.pos.y)**2)
+                    
                     if distance_from_object < record:
                         record = distance_from_object
                         closest_object = point
+
             if closest_object:
                 #uncomment to see collision rays
-                pg.draw.line(self.game.screen, 'red', ray.pos, closest_object)
+                #pg.draw.line(self.game.screen, 'red', ray.pos, closest_object)
                 if record < PLAYER_SIZE:
                     ray_pos = pg.math.Vector2(closest_object)
                     colliding_rays.append(ray_pos)
+
             collided = False
             colliding_rays_num = 0
+
             for collision in colliding_rays:
                 dx = abs(collision.x - self.origin.pos.x)
                 dy = abs(collision.y - self.origin.pos.y)
                 Radius = PLAYER_SIZE
+
                 if dx < Radius and dy < Radius:
                     colliding_rays_num += 1
                     average_vector += collision / len(colliding_rays)
                     #uncomment to see collision points
                     #pg.draw.circle(self.game.screen, 'red', collision, 5) 
                     collided = True
+
             if collided:
                 self.origin.is_colliding = True
                 self.origin.average_point = average_vector
                 
-                angle = angle_between_vectors(average_vector[0], average_vector[1], self.origin.pos.x, self.origin.pos.y)
-                speed_vector_x = math.cos(angle) * PLAYER_SPEED * self.game.delta_time
-                speed_vector_y = math.sin(angle) * PLAYER_SPEED * self.game.delta_time
-                self.origin.speed_x = speed_vector_x
-                self.origin.speed_y = speed_vector_y
             if colliding_rays_num < 1:
-                self.origin.speed_x = 0
-                self.origin.speed_y = 0
                 self.origin.is_colliding = False
                 self.origin.average_point = None
                 collided = False
@@ -99,6 +98,7 @@ class RayManager:
                 if point:
                     point_x, point_y = point  
                     distance_from_object =  math.sqrt((point_x - ray.pos.x)**2 + (point_y - ray.pos.y)**2)
+                    
                     if distance_from_object < record:
                         record = distance_from_object
                         closest_object = point
