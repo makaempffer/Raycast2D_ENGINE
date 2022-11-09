@@ -6,6 +6,7 @@ from world_object_manager import *
 from ray import *
 from ray_manager import *
 from object_renderer import *
+from objects import *
 
 class Game:
     def __init__(self):
@@ -17,11 +18,11 @@ class Game:
         self.new_game()
 
     def new_game(self):
-            self.player = Player(self)
-            self.world_object_manager = WorldObjectManager(self)
-            self.world_object_manager.add_random_object_number(5)
-            self.object_renderer = ObjectRenderer(self)
-            self.ray_manager = RayManager(self, self.player, self.world_object_manager, self.object_renderer)
+        self.player = Player(self)
+        self.world_object_manager = WorldObjectManager(self)
+        self.world_object_manager.add_random_rects(5)
+        self.object_renderer = ObjectRenderer(self)
+        self.ray_manager = RayManager(self, self.player, self.world_object_manager.objects_rects_borders, self.object_renderer)
 
     def update(self):
         #updates modules
@@ -33,7 +34,7 @@ class Game:
         pg.display.set_caption(f'{self.clock.get_fps() :.1f}')
 
     def draw(self):
-        self.screen.fill('black')
+        self.screen.fill((60, 60, 60))
         self.draw_2d()
         #self.draw_3d()
 
@@ -45,7 +46,6 @@ class Game:
         self.object_renderer.render()
 
     def check_events(self):
-        self.global_trigger = False
         for event in pg.event.get():
             if event.type == pg.QUIT or (event.type == pg.KEYDOWN and event.key == pg.K_ESCAPE):
                 pg.quit()

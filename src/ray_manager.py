@@ -2,7 +2,7 @@ from ray import *
 from functions import *
 
 class RayManager:
-    def __init__(self, game, origin, walls, renderer):
+    def __init__(self, game, origin, walls: list, renderer):
         self.game = game
         self.objects = walls
         self.renderer = renderer
@@ -42,8 +42,8 @@ class RayManager:
             ray.update()
             closest_object = None
             record = 100000
-            for object in self.objects.object_list:
-                point = ray.cast(object)
+            for object in self.objects:
+                point = ray.cast(object[0], object[1])
                 if point:
                     
                     point_x, point_y = point  
@@ -55,7 +55,7 @@ class RayManager:
 
             if closest_object:
                 #uncomment to see collision rays
-                #pg.draw.line(self.game.screen, 'red', ray.pos, closest_object)
+                pg.draw.line(self.game.screen, 'red', ray.pos, closest_object)
                 if record < PLAYER_SIZE:
                     ray_pos = pg.math.Vector2(closest_object)
                     colliding_rays.append(ray_pos)
@@ -86,6 +86,8 @@ class RayManager:
             
 
     def cast_rays(self):
+        """Updates renderer to draw <list> by casting rays 
+        returning positions and columns number"""
         columns = []
         objects = []
         for ray in self.rays:
@@ -93,8 +95,8 @@ class RayManager:
             closest_object = None
             record = 100000
             
-            for object in self.objects.object_list:
-                point = ray.cast(object)
+            for object in self.objects:
+                point = ray.cast(object[0], object[1])
                 if point:
                     point_x, point_y = point  
                     distance_from_object =  math.sqrt((point_x - ray.pos.x)**2 + (point_y - ray.pos.y)**2)

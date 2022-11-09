@@ -27,14 +27,14 @@ class Ray:
         #pg.draw.line(self.game.screen, 'red'
                     #,self.pos, (self.dir.x, self.dir.y))
 
-    def cast(self, wall) -> tuple:
+    def cast(self, a: tuple, b: tuple) -> tuple:
         """Casts a ray that checks for interception with a line 
         and return the point of interception as a tuple
         [-] Called from the ray manager for each ray"""
-        x1 = wall.a_x
-        x2 = wall.b_x
-        y1 = wall.a_y
-        y2 = wall.b_y
+        x1 = a[0]
+        y1 = a[1]
+        x2 = b[0]
+        y2 = b[1]
         x3 = self.pos.x
         y3 = self.pos.y
         x4 = self.dir.x

@@ -1,6 +1,7 @@
 from settings import *
 import pygame as pg
 from functions import *
+
 class ObjectRenderer:
     def __init__(self, game):
         self.game = game
