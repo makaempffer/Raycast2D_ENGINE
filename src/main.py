@@ -20,7 +20,7 @@ class Game:
     def new_game(self):
         self.player = Player(self)
         self.world_object_manager = WorldObjectManager(self)
-        self.world_object_manager.add_random_rects(5)
+        self.world_object_manager.add_random_rects(10)
         self.object_renderer = ObjectRenderer(self)
         self.ray_manager = RayManager(self, self.player, self.world_object_manager.objects_rects_borders, self.object_renderer)
 
@@ -35,8 +35,8 @@ class Game:
 
     def draw(self):
         self.screen.fill((60, 60, 60))
-        self.draw_2d()
-        #self.draw_3d()
+        #self.draw_2d()
+        self.draw_3d()
 
     def draw_2d(self):
         self.player.draw()

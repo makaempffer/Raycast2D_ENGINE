@@ -25,7 +25,7 @@ class RayManager:
             #self.collision_rays.append(Ray(self.game, angle, self.origin, i))
         
         for i in range(0, 360, 10):
-            self.collision_rays.append(Ray(self.game.screen, math.radians(i), self.origin, i))
+            self.collision_rays.append(Ray(self.game.screen, math.radians(i), self.origin, i, PLAYER_SIZE))
 
 
     def update(self):
@@ -43,6 +43,8 @@ class RayManager:
             closest_object = None
             record = 100000
             for object in self.objects:
+                if pg.math.Vector2.distance_to(self.origin.pos, pg.Vector2(object[0], object[1])) > 100:
+                    continue
                 point = ray.cast(object[0], object[1])
                 if point:
                     
@@ -96,6 +98,9 @@ class RayManager:
             record = 100000
             
             for object in self.objects:
+                #if an object is > 800 away it wont process 
+                if pg.math.Vector2.distance_to(self.origin.pos, pg.Vector2(object[0], object[1])) > 800:
+                    continue
                 point = ray.cast(object[0], object[1])
                 if point:
                     point_x, point_y = point  

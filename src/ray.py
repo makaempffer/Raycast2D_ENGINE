@@ -3,17 +3,19 @@ from ray import *
 import pygame as pg
 
 class Ray:
-    def __init__(self, game, angle, origin, column):
+    def __init__(self, game, angle, origin, column, ray_lenght= WIDTH):
         self.game = game
         self.origin = origin
         self.pos = pg.math.Vector2(self.origin.pos)
         self.dir = pg.math.Vector2(1, 1)
         self.angle = angle
         self.column = column
+        self.ray_lenght = ray_lenght
 
     def update(self):
         self.update_pos()
         self.update_ray_direction()
+        
     
     def update_pos(self):
         self.pos.x, self.pos.y = self.origin.pos
@@ -21,11 +23,10 @@ class Ray:
     def update_ray_direction(self):
         """Updates the ray direction depending on the angle given"""
         ray_angle = self.origin.angle - HALF_FOV + 0.0001 + self.angle
-        self.dir.x =  self.pos.x + WIDTH * math.cos(ray_angle)
-        self.dir.y = self.pos.y + WIDTH * math.sin(ray_angle)
+        self.dir.x =  self.pos.x + self.ray_lenght * math.cos(ray_angle)
+        self.dir.y = self.pos.y + self.ray_lenght * math.sin(ray_angle)
         #draw a line in direction of the ray
-        #pg.draw.line(self.game.screen, 'red'
-                    #,self.pos, (self.dir.x, self.dir.y))
+        #pg.draw.line(self.game.screen, 'red',self.pos, (self.dir.x, self.dir.y))
 
     def cast(self, a: tuple, b: tuple) -> tuple:
         """Casts a ray that checks for interception with a line 
