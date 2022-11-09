@@ -43,7 +43,7 @@ class RayManager:
             closest_object = None
             record = 100000
             for object in self.objects:
-                if pg.math.Vector2.distance_to(self.origin.pos, pg.Vector2(object[0], object[1])) > 100:
+                if pg.math.Vector2.distance_to(self.origin.pos, pg.Vector2(object[0], object[1])) > MAX_OBJECT_LENGHT:
                     continue
                 point = ray.cast(object[0], object[1])
                 if point:
