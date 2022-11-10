@@ -16,7 +16,7 @@ class ObjectRenderer:
             player_vect = pg.Vector2(self.game.player.pos)
             dist_to_object = pg.math.Vector2.distance_to(player_vect, object_vect)
             projection_height = OBJECT_HEIGHT / dist_to_object * SCREEN_DIST
-            color = map_value(dist_to_object, 0, WIDTH + MAX_OBJECT_LENGHT, 0, 200)
+            color = map_value(dist_to_object, 0, WIDTH, 0, 255)
             color = color, color, color
             #############
             pg.draw.rect(self.game.screen, color, (self.columns[i] * SCALE, HALF_HEIGHT - projection_height / 2, SCALE, projection_height))

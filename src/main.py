@@ -2,11 +2,11 @@ import pygame as pg
 import sys
 from settings import * 
 from player import * 
-from world_object_manager import * 
 from ray import *
 from ray_manager import *
 from object_renderer import *
 from objects import *
+from chunks import ChunkMap
 
 class Game:
     def __init__(self):
@@ -19,10 +19,10 @@ class Game:
 
     def new_game(self):
         self.player = Player(self)
-        self.world_object_manager = WorldObjectManager(self)
-        self.world_object_manager.add_random_rects(15)
+        self.chunk = ChunkMap()
         self.object_renderer = ObjectRenderer(self)
-        self.ray_manager = RayManager(self, self.player, self.world_object_manager.objects_rects_borders, self.object_renderer)
+        print(self.chunk.block_borders)
+        self.ray_manager = RayManager(self, self.player, self.chunk.block_borders, self.object_renderer)
 
     def update(self):
         #updates modules
@@ -32,6 +32,7 @@ class Game:
         pg.display.flip()
         self.delta_time = self.clock.tick(FPS)
         pg.display.set_caption(f'{self.clock.get_fps() :.1f}')
+        ## 5 frames counter
 
     def draw(self):
         self.screen.fill((200, 200, 200))
@@ -40,7 +41,7 @@ class Game:
 
     def draw_2d(self):
         self.player.draw()
-        self.world_object_manager.draw()
+
     
     def draw_3d(self):
         self.object_renderer.render()

@@ -1,21 +1,8 @@
-from pygame import draw, Vector2
-
-class Wall:
-    def __init__(self, game, a: tuple, b: tuple):
-        self.game = game
-        self.a_x, self.a_y = a
-        self.b_x, self.b_y = b 
-    
-    def draw(self):
-        draw.line(self.game.screen, 'gray',
-                    (self.a_x, self.a_y), 
-                    (self.b_x, self.b_y), 1)
-
+from pygame import Vector2
 
 class WallRect:
     """Object that represent a rectangle shape made of <lines>"""
-    def __init__(self, game, startpos: tuple, width: int, height: int):
-        self.game = game
+    def __init__(self, startpos: tuple, width: int, height: int):
         self.start_pos = Vector2(startpos)
         self.width = width
         self.height = height
@@ -32,9 +19,4 @@ class WallRect:
         return borders
     
 
-    def draw(self):
-        draw.line(self.game.screen, 'white', self.start_pos, (self.start_pos.x + self.width, self.start_pos.y))
-        draw.line(self.game.screen, 'white', self.start_pos, (self.start_pos.x, self.start_pos.y + self.height))
-        draw.line(self.game.screen, 'white', (self.start_pos.x, self.start_pos.y + self.height), (self.start_pos.x + self.width, self.start_pos.y + self.height))
-        draw.line(self.game.screen, 'white',  (self.start_pos.x + self.width, self.start_pos.y + self.height), (self.start_pos.x + self.width, self.start_pos.y))
         

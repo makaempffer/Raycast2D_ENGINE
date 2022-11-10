@@ -11,6 +11,11 @@ class RayManager:
         self.collision_rays = []
         self.radians = [round(math.pi/6, 1), round(math.pi/4, 1), round(math.pi/3, 1), round(math.pi/2, 1)]
         self.set_rays()
+        self.clock = pg.time.Clock()
+        
+    def reload_terrain(self):
+        ### to implement
+        pass
     
     def set_rays(self):
         """Create ray array and set angles to ++DELTA_ANGLE"""
@@ -31,6 +36,7 @@ class RayManager:
     def update(self):
         self.cast_collision_rays()
         self.cast_rays()
+        self.reload_terrain()
     
     def cast_collision_rays(self):
         """get the direction of movement of the player and the closest rays colliding,
@@ -43,7 +49,7 @@ class RayManager:
             closest_object = None
             record = 100000
             for object in self.objects:
-                if pg.math.Vector2.distance_to(self.origin.pos, pg.Vector2(object[0], object[1])) > MAX_OBJECT_LENGHT:
+                if pg.math.Vector2.distance_to(self.origin.pos, pg.Vector2(object[0], object[1])) > 1015:
                     continue
                 point = ray.cast(object[0], object[1])
                 if point:
@@ -90,6 +96,7 @@ class RayManager:
     def cast_rays(self):
         """Updates renderer to draw <list> by casting rays 
         returning positions and columns number"""
+
         columns = []
         visible_objects = []
         for ray in self.rays:
@@ -99,7 +106,7 @@ class RayManager:
             for object in self.objects:
                 obj_vect = pg.Vector2(object[0], object[1])
                 #if an object is > 800 away it wont process 
-                if pg.math.Vector2.distance_to(self.origin.pos, obj_vect) > 1015:
+                if pg.math.Vector2.distance_to(self.origin.pos, obj_vect) > 1000:
                     continue
                 point = ray.cast(object[0], object[1])
                 if point:
