@@ -70,8 +70,6 @@ class Player():
         self.dir.x, self.dir.y = dx, dy
         self.angle %= math.tau
 
-        
-
     def draw(self):
         pg.draw.line(self.game.screen, 'yellow', (self.pos.x , self.pos.y), 
                 (self.pos.x + WIDTH * math.cos(self.angle), 

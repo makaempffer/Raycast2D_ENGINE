@@ -7,6 +7,7 @@ from ray_manager import *
 from object_renderer import *
 from objects import *
 from chunks import ChunkMap
+from chunk_loader import *
 
 class Game:
     def __init__(self):
@@ -19,19 +20,19 @@ class Game:
 
     def new_game(self):
         self.player = Player(self)
-        self.chunk = ChunkMap()
         self.object_renderer = ObjectRenderer(self)
-        print(self.chunk.block_borders)
-        self.ray_manager = RayManager(self, self.player, self.chunk.block_borders, self.object_renderer)
+        self.chunk_loader = ChunkLoader(self.player)
+        self.ray_manager = RayManager(self, self.player, self.chunk_loader.loaded_chunks, self.object_renderer)
 
     def update(self):
         #updates modules
         self.player.update()
-        self.ray_manager.update()
+        self.chunk_loader.update()
+        self.ray_manager.update(self.chunk_loader.loaded_chunks)
         ################
         pg.display.flip()
         self.delta_time = self.clock.tick(FPS)
-        pg.display.set_caption(f'{self.clock.get_fps() :.1f}')
+        pg.display.set_caption(f'{self.clock.get_fps() :.1f}, {self.player.pos}')
         ## 5 frames counter
 
     def draw(self):

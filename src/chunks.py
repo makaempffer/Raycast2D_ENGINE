@@ -1,7 +1,9 @@
 from map import *
 from objects import *
+from settings import *
+
 class ChunkMap:
-    def __init__(self, chunk_size: int = 1000, pos = (0, 0) , layout = mini_map):
+    def __init__(self, chunk_size: int = CHUNK_SIZE, pos = (0, 0) , layout = mini_map):
         self.size = chunk_size
         self.pos = pos
         self.layout = layout

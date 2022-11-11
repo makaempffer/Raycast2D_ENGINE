@@ -13,9 +13,8 @@ class RayManager:
         self.set_rays()
         self.clock = pg.time.Clock()
         
-    def reload_terrain(self):
-        ### to implement
-        pass
+    def reload_terrain(self, borders: list):
+        self.objects = borders
     
     def set_rays(self):
         """Create ray array and set angles to ++DELTA_ANGLE"""
@@ -33,10 +32,10 @@ class RayManager:
             self.collision_rays.append(Ray(self.game.screen, math.radians(i), self.origin, i, PLAYER_SIZE))
 
 
-    def update(self):
+    def update(self, borders: list):
         self.cast_collision_rays()
         self.cast_rays()
-        self.reload_terrain()
+        self.reload_terrain(borders)
     
     def cast_collision_rays(self):
         """get the direction of movement of the player and the closest rays colliding,
